@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<title>Artificial Horizon</title>
+
+<link rel="icon" type="image/png" href="icons/icon-128.png">
+<link href="./Artificial-Horizon-master/style/main.css" rel="stylesheet" media="all" />
+
+<script src="./Artificial-Horizon-master/script/RequestAnimationFrame.js"></script>
+<script src="./Artificial-Horizon-master/script/main.js"></script>
+
+<script src="./three.js-master/build/three.min.js"></script>
+<body style="margin:0px">
+
+<canvas width="270" height="270" id="canvas"></canvas>
+<div id="top"></div>
+<div id="threejs"  />
+<script>
+
+
+
+const width=1000;
+const height=100;
+const geometry = new THREE.BoxGeometry( 30, 1, 30 );
+
+
+/** Elements that aren't the0 focus of the example */
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(0xffffff);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 10000);
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth/window.innerHeight);
+document.getElementById('threejs').appendChild(renderer.domElement);
+
+const material = new THREE.MeshNormalMaterial();
+
+const mesh = new THREE.Mesh(geometry, material);
+
+mesh.scale.x = 0.1;
+mesh.scale.y = 0.1;
+mesh.scale.z = 0.1;
+
+scene.add(mesh);
+
+camera.position.z = 5;
+
+const frontSpot = new THREE.SpotLight(0xffffff);
+frontSpot.position.set(1000, 1000, 1000);
+scene.add(frontSpot);
+
+ const frontSpot2 = new THREE.SpotLight(0xeeeeee);
+ frontSpot2.position.set(-500, -500, -500);
+ scene.add(frontSpot2);
+
+const animate = function () {
+  requestAnimationFrame(animate);
+
+  mesh.rotation.x += 0.00;
+  mesh.rotation.y += 0.00;
+  mesh.rotation.z += 0.00;
+
+  renderer.render(scene, camera);
+};
+
+
+var xSpeed = Math.PI / 10;
+var ySpeed = Math.PI / 10;
+
+document.addEventListener("keydown", onDocumentKeyDown, false);
+function onDocumentKeyDown(event) {
+
+    var keyCode = event.which;
+    if (keyCode == 38) {
+	
+        mesh.rotation.x -= ySpeed;
+    } else if (keyCode == 40) {
+        mesh.rotation.x += ySpeed;
+    } else if (keyCode == 37) {
+        mesh.rotation.y -= xSpeed;
+    } else if (keyCode == 39) {
+        mesh.rotation.y += xSpeed;
+    } else if (keyCode == 32) {
+        mesh.rotation.set(0, 0, 0);
+    }
+};
+
+
+
+animate();
+
+
+</script>
+
+
+</body>
